@@ -1,12 +1,12 @@
 #!/bin/bash
-
+current_dir=$(pwd)
 # Constants
-cache_dir="$HOME/OpenTaiko_git/cache"
-desktop_file="$HOME/git/opentaiko_linux_installer/desktop_files/opentaiko.desktop"
+cache_dir="$current_dir/cache"
+desktop_file="$current_dir/opentaiko.desktop"
 desktop_folder="$HOME/.local/share/applications"
 archive_filename="OpenTaiko.Linux.x64.zip"
-installation_folder="$HOME/OpenTaiko_git"
-launcher="$HOME/git/opentaiko_linux_installer/start_opentaiko.sh"
+installation_folder="$current_dir/OpenTaiko"
+launcher="$current_dir/start_opentaiko.sh"
 git_repo="0auBSQ/OpenTaiko"
 
 # Create cache directory
@@ -98,6 +98,21 @@ echo "OpenTaiko setup complete in $installation_folder"
 
 # Copy launcher script to installation folder
 cp "$launcher" "$installation_folder"
-chmod +x "$installation_folder/start_opentaiko.sh"
+chmod +x "$launcher"
 
 cp "$desktop_file" "$desktop_folder"
+cat > "$desktop_file" <<EOL
+[Desktop Entry]
+Name=OpenTaiko
+Exec=$installation_folder/start_opentaiko.sh
+Path=$installation_folder
+Icon=$installation_folder/publish/OpenTaiko.ico
+Terminal=false
+Type=Application
+Categories=Game;
+EOL
+
+echo "Desktop entry created at $desktop_file"
+
+cp "$desktop_file" "$desktop_folder"
+echo "OpenTaiko installation complete. You can now launch it from your applications menu."
